@@ -10,15 +10,15 @@ class AgencyService
     /**
      * @var Agency
      */
-    private $agencyClass;
+    private $agency;
 
     /**
      * AgencyService constructor.
-     * @param Agency $agencyClass
+     * @param Agency $agency
      */
-    public function __construct(Agency $agencyClass)
+    public function __construct(Agency $agency)
     {
-        $this->agencyClass = $agencyClass;
+        $this->agency = $agency;
     }
 
     /**
@@ -30,7 +30,7 @@ class AgencyService
      */
     public function enrollAgency(int $agencyId, int $rewardsProgramId): array
     {
-        if (!($agency = $this->agencyClass::find($agencyId))) {
+        if (!($agency = $this->agency::find($agencyId))) {
             return [
                 'error' => "Agency with ID $agencyId was not found."
             ];

@@ -22,6 +22,7 @@ class CreateBookingGoalsTable extends Migration
         });
 
         Schema::table('booking_goals', function (Blueprint $table) {
+            $table->unique(['agency_id', 'year']);
             $table->foreign('agency_id')
                 ->references('id')->on('agencies')
                 ->onUpdate('cascade')
@@ -38,6 +39,8 @@ class CreateBookingGoalsTable extends Migration
     {
         Schema::table('booking_goals', function (Blueprint $table) {
             $table->dropForeign(['agency_id']);
+            $table->dropUnique(['agency_id', 'year']);
+
         });
 
         Schema::dropIfExists('booking_goals');

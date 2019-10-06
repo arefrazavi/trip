@@ -24,33 +24,36 @@ class CalculateBookingGoalRewards extends Command
     /**
      * @var BookingGoalService
      */
-    private $bookingGoalServiceClass;
+    private $bookingGoalService;
 
     /**
      * Create a new command instance.
      *
-     * @param BookingGoalService $bookingGoalServiceClass
+     * @param BookingGoalService $bookingGoalService
      */
-    public function __construct(BookingGoalService $bookingGoalServiceClass)
+    public function __construct(BookingGoalService $bookingGoalService)
     {
         parent::__construct();
-        $this->bookingGoalServiceClass = $bookingGoalServiceClass;
+        $this->bookingGoalService = $bookingGoalService;
     }
 
     /**
      * Execute the console command.
      *
-     * @return void
+     * @return int
      */
-    public function handle() : void
+    public function handle(): int
     {
-        $agencyRewards = $this->bookingGoalServiceClass->calculateReward($this->argument('year'));
+        $agencyRewards = $this->bookingGoalService->calculateReward($this->argument('year'));
 
-        if ($agencyRewards) {
-            $headers = ['Agency', 'Booking Goal Reward'];
-            $this->table($headers, $agencyRewards);
-        } else {
+        if (!$agencyRewards) {
             $this->warn("No result was found!");
+
+            return 0;
         }
+        $headers = ['Agency', 'Booking Goal Reward (€)'];
+        $this->table($headers, $agencyRewards);
+
+        return 1;
     }
 }

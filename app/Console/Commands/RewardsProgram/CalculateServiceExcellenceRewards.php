@@ -24,36 +24,40 @@ class CalculateServiceExcellenceRewards extends Command
     /**
      * @var ServiceExcellenceService
      */
-    private $serviceExcellenceServiceClass;
+    private $serviceExcellenceService;
 
     /**
      * Create a new command instance.
      *
-     * @param ServiceExcellenceService $serviceExcellenceServiceClass
+     * @param ServiceExcellenceService $serviceExcellenceService
      */
-    public function __construct(ServiceExcellenceService $serviceExcellenceServiceClass)
+    public function __construct(ServiceExcellenceService $serviceExcellenceService)
     {
         parent::__construct();
-        $this->serviceExcellenceServiceClass = $serviceExcellenceServiceClass;
+        $this->serviceExcellenceService = $serviceExcellenceService;
     }
 
     /**
      * Execute the console command.
      *
-     * @return void
+     * @return int
      */
-    public function handle() : void
+    public function handle(): int
     {
-        $agencyRewards = $this->serviceExcellenceServiceClass->calculateReward(
+        $agencyRewards = $this->serviceExcellenceService->calculateReward(
             $this->argument('year'),
             $this->argument('month')
         );
 
-        if ($agencyRewards) {
-            $headers = ['Agency', 'Service Excellence Reward'];
-            $this->table($headers, $agencyRewards);
-        } else {
+        if (!$agencyRewards) {
             $this->warn("No result was found!");
+
+            return 0;
         }
+
+        $headers = ['Agency', 'Service Excellence Reward(€)'];
+        $this->table($headers, $agencyRewards);
+
+        return 1;
     }
 }

@@ -22,6 +22,7 @@ class CreateServiceExcellencesTable extends Migration
         });
 
         Schema::table('service_excellences', function (Blueprint $table) {
+            $table->unique(['agency_id', 'year', 'month']);
             $table->foreign('agency_id')
                 ->references('id')->on('agencies')
                 ->onUpdate('cascade')
@@ -38,6 +39,7 @@ class CreateServiceExcellencesTable extends Migration
     {
         Schema::table('service_excellences', function (Blueprint $table) {
             $table->dropForeign(['agency_id']);
+            $table->dropUnique(['agency_id', 'year', 'month']);
         });
 
         Schema::dropIfExists('service_excellences');

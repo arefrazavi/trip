@@ -21,14 +21,11 @@ class AgencyRewardsProgram extends Migration
 
 
         Schema::table('agency_rewards_program', function (Blueprint $table) {
-
             $table->primary(['agency_id', 'rewards_program_id']);
-
             $table->foreign('agency_id')
                 ->references('id')->on('agencies')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
-
             $table->foreign('rewards_program_id')
                 ->references('id')->on('rewards_programs')
                 ->onUpdate('cascade')
@@ -44,8 +41,8 @@ class AgencyRewardsProgram extends Migration
     public function down()
     {
         Schema::table('agency_rewards_program', function (Blueprint $table) {
-            $table->dropForeign(['agency_id']);
             $table->dropForeign(['rewards_program_id']);
+            $table->dropForeign(['agency_id']);
             $table->dropPrimary(['agency_id', 'rewards_program_id']);
         });
 

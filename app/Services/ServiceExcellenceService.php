@@ -9,13 +9,6 @@ use App\Services\Interfaces\RewardsProgramInterface;
 class ServiceExcellenceService implements RewardsProgramInterface
 {
     /**
-     * Database ID of Monthly Service Excellence rewards program
-     *
-     * @var int
-     */
-    public const REWARDS_PROGRAM_ID = 1;
-
-    /**
      *  a fixed amount of reward for each achieved service in Euro
      *
      * @var float
@@ -25,15 +18,15 @@ class ServiceExcellenceService implements RewardsProgramInterface
     /**
      * @var ServiceExcellence
      */
-    private $serviceExcellenceClass;
+    private $serviceExcellence;
 
     /**
      * ServiceExcellenceService constructor.
-     * @param ServiceExcellence $serviceExcellenceClass
+     * @param ServiceExcellence $serviceExcellence
      */
-    public function __construct(ServiceExcellence $serviceExcellenceClass)
+    public function __construct(ServiceExcellence $serviceExcellence)
     {
-        $this->serviceExcellenceClass = $serviceExcellenceClass;
+        $this->serviceExcellence = $serviceExcellence;
     }
 
     /**
@@ -48,7 +41,7 @@ class ServiceExcellenceService implements RewardsProgramInterface
     {
         $whereClause = [
             ['achieved', true],
-            ['agency_rewards_program.rewards_program_id', self::REWARDS_PROGRAM_ID]
+            ['agency_rewards_program.rewards_program_id', RewardsProgram::MONTHLY_SERVICE_EXCELLENCE_ID]
         ];
         if ($year) {
             $whereClause[] = ['year', $year];
@@ -58,7 +51,7 @@ class ServiceExcellenceService implements RewardsProgramInterface
         }
         $selectClause = "agencies.name AS agency, COUNT(*) * ? AS reward";
 
-        $agencyRewards = $this->serviceExcellenceClass
+        $agencyRewards = $this->serviceExcellence
             ::selectRaw($selectClause, [self::REWARD_FEE])
             ->join('agencies', 'agencies.id', '=', 'service_excellences.agency_id')
             ->join('agency_rewards_program', 'agency_rewards_program.agency_id', 'agencies.id')

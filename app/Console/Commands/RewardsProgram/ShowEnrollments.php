@@ -20,50 +20,52 @@ class ShowEnrollments extends Command
      *
      * @var string
      */
-    protected $description = 'See all enrollments';
+    protected $description = 'See all agency enrollments into rewards programs';
 
     /**
      * @var AgencyService
      */
-    private $agencyServiceClass;
+    private $agencyService;
 
     /**
      * Create a new command instance.
      *
-     * @param AgencyService $agencyServiceClass
+     * @param AgencyService $agencyService
      */
-    public function __construct(AgencyService $agencyServiceClass)
+    public function __construct(AgencyService $agencyService)
     {
         parent::__construct();
-        $this->agencyServiceClass = $agencyServiceClass;
+        $this->agencyService = $agencyService;
     }
 
     /**
      * Execute the console command.
      *
-     * @return mixed
+     * @return int
      */
-    public function handle()
+    public function handle(): int
     {
-        $agencies = $this->agencyServiceClass->getAllEnrolledAgencies();
+        $agencies = $this->agencyService->getAllEnrolledAgencies();
 
-        if ($agencies) {
-            $result = [];
-            foreach ($agencies as $agency) {
-                $result[$agency->id]['name'] = $agency->name;
-                $rewardsNum = count($agency->rewardsPrograms);
-                $result[$agency->id]['rewardPrograms'] = '';
-                for ($i = 0; $i < $rewardsNum; $i++) {
-                    $result[$agency->id]['rewardPrograms'] .= $agency->rewardsPrograms[$i]['name'];
-                    $result[$agency->id]['rewardPrograms'] .= ($i < $rewardsNum - 1) ? ", " : "";
-                }
-            }
-
-            $headers = ['Agency', 'Rewards Programs'];
-            $this->table($headers, $result);
-        } else {
+        if ($agencies->isEmpty()) {
             $this->warn("No agency has enrolled in any rewards program yet!");
+            return 0;
         }
 
+        $result = [];
+        foreach ($agencies as $agency) {
+            $result[$agency->id]['name'] = $agency->name;
+            $rewardsNum = count($agency->rewardsPrograms);
+            $result[$agency->id]['rewardPrograms'] = '';
+            for ($i = 0; $i < $rewardsNum; $i++) {
+                $result[$agency->id]['rewardPrograms'] .= $agency->rewardsPrograms[$i]['name'];
+                $result[$agency->id]['rewardPrograms'] .= ($i < $rewardsNum - 1) ? ", " : "";
+            }
+        }
+
+        $headers = ['Agency', 'Rewards Programs'];
+        $this->table($headers, $result);
+
+        return 1;
     }
 }

@@ -22,31 +22,37 @@ class EnrollAgency extends Command
      */
     protected $description = 'Enroll a given agency into a given rewards program';
 
-    private $agencyServiceClass;
+    private $agencyService;
 
     /**
      * Create a new command instance.
      *
-     * @param AgencyService $agencyServiceClass
+     * @param AgencyService $agencyService
      */
-    public function __construct(AgencyService $agencyServiceClass)
+    public function __construct(AgencyService $agencyService)
     {
         parent::__construct();
-        $this->agencyServiceClass = $agencyServiceClass;
+        $this->agencyService = $agencyService;
     }
 
     /**
      * Execute the console command.
      *
-     * @return void
+     * @return int
      */
-    public function handle() : void
+    public function handle(): int
     {
-        $enrollmentResult = $this->agencyServiceClass->enrollAgency($this->argument('agencyId'), $this->argument('rewardsProgramId'));
-        if (isset($enrollmentResult['success'])) {
-            $this->info("OK");
-        } else {
+        $enrollmentResult = $this->agencyService->enrollAgency($this->argument('agencyId'), $this->argument('rewardsProgramId'));
+
+        if (isset($enrollmentResult['error'])) {
             $this->warn($enrollmentResult['error']);
+
+            return 0;
         }
+
+        $this->info("OK");
+
+        return 1;
+
     }
 }

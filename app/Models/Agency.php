@@ -7,6 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 class Agency extends Model
 {
     /**
+     * @var bool
+     */
+    public $timestamps = false;
+
+    /**
      * Get the rewards programs that agency offer
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
@@ -21,7 +26,7 @@ class Agency extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function bookGoals()
+    public function bookingGoals()
     {
         return $this->hasMany(BookingGoal::class);
     }
