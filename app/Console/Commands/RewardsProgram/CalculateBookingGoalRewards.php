@@ -48,7 +48,7 @@ class CalculateBookingGoalRewards extends Command
         $agencyRewards = $this->bookingGoalService->calculateReward($this->argument('year'));
 
         if (!$agencyRewards) {
-            $this->warn("No result was found!");
+            $this->warn("There is no agency winning booking goal reward yet!");
 
             return 0;
         }

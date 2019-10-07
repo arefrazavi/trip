@@ -51,7 +51,7 @@ class CalculateServiceExcellenceRewards extends Command
         );
 
         if (!$agencyRewards) {
-            $this->warn("No result was found!");
+            $this->warn("There is no agency winning service excellence reward yet!");
 
             return 0;
         }

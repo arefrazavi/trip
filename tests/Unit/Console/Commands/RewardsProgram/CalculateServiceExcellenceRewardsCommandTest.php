@@ -158,6 +158,6 @@ class CalculateServiceExcellenceRewardsCommandTest extends TestCase
         $year = '2020';
 
         $this->artisan(self::COMMAND_BASE_SIGNATURE . " $year")
-            ->expectsOutput("No result was found!");
+            ->expectsOutput("There is no agency winning service excellence reward yet!");
     }
 }
