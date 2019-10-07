@@ -68,11 +68,11 @@ class BookingGoalServiceTest extends TestCase
     public function testCalculateReward(): void
     {
         /* Populate Fake Data */
-        $year = '2019';
+        $year = 2019;
         $expectedRewards = [];
         foreach ($this->fakeBookingGoalsData as $agencyName => $fakeDataArray) {
             $agency = factory(Agency::class)->create([
-                    'name' => $agencyName
+                'name' => $agencyName
             ]);
 
             $achievement = 0;
@@ -81,8 +81,8 @@ class BookingGoalServiceTest extends TestCase
                 $agency->bookingGoals()
                     ->save(factory(BookingGoal::class)
                         ->create($fakeData)
-                );
-                if($fakeData['year'] == $year) {
+                    );
+                if ($fakeData['year'] == $year) {
                     $achievement = $fakeData['achievement'];
                     $target = $fakeData['target'];
                 }
@@ -97,7 +97,7 @@ class BookingGoalServiceTest extends TestCase
                 [$this->rewardsProgram->id => ['created_at' => new \DateTime()]]
             );
 
-            if($achievement >= $target) {
+            if ($achievement >= $target) {
                 $expectedRewards[] = [
                     'agency' => $agencyName,
                     'reward' => $achievement * $this->bookingGoalService::REWARD_FEE_PERCENTAGE
@@ -107,6 +107,10 @@ class BookingGoalServiceTest extends TestCase
 
         /* Run the method and test the result */
         $agencyRewards = $this->bookingGoalService->calculateReward('2019');
-        $this->assertEquals($expectedRewards, $agencyRewards, "Wrong Rewards Calculation");
+        $this->assertEquals(
+            $expectedRewards,
+            $agencyRewards,
+            "Booking Goal rewards should be calculated correctly."
+        );
     }
 }

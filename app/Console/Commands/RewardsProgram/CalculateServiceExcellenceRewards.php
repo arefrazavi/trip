@@ -19,7 +19,8 @@ class CalculateServiceExcellenceRewards extends Command
      *
      * @var string
      */
-    protected $description = 'Calculate all monthly service excellence rewards per agency in a given year/month';
+    protected $description = 'Calculate all monthly service excellence rewards 
+    for each enrolled agency that has won a reward in a given year/month';
 
     /**
      * @var ServiceExcellenceService

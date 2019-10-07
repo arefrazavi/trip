@@ -88,7 +88,11 @@ class AgencyServiceTest extends TestCase
             }
         }
         // Compare the number of enrolled agencies in each rewards program
-        $this->assertEquals(array_sum($expectedEnrolledAgenciesCount), $enrolledAgencies->count(), "getAllEnrolledAgencies should return all of the enrolled agencies");
+        $this->assertEquals(
+            $expectedEnrolledAgenciesCount,
+            $enrolledAgenciesCount,
+            "getAllEnrolledAgencies should return all of the enrolled agencies."
+        );
 
     }
 }

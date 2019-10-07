@@ -111,9 +111,9 @@ class ServiceExcellenceServiceTest extends TestCase
             foreach ($fakeDataArray as $fakeData) {
                 $agency->ServiceExcellences()
                     ->save(factory(ServiceExcellence::class)
-                    ->create($fakeData)
-                );
-                if($fakeData['achieved'] && $fakeData['year'] == $year) {
+                        ->create($fakeData)
+                    );
+                if ($fakeData['achieved'] && $fakeData['year'] == $year) {
                     $achievedServicesCount++;
                 }
             }
@@ -135,6 +135,10 @@ class ServiceExcellenceServiceTest extends TestCase
 
         /* Run the method and test the result */
         $agencyRewards = $this->serviceExcellencesService->calculateReward($year);
-        $this->assertEquals($expectedRewards, $agencyRewards, "Wrong Rewards Calculation");
+        $this->assertEquals(
+            $expectedRewards,
+            $agencyRewards,
+            "Service excellence rewards should be calculated correctly."
+        );
     }
 }

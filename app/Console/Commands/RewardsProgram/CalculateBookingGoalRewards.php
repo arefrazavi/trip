@@ -19,7 +19,8 @@ class CalculateBookingGoalRewards extends Command
      *
      * @var string
      */
-    protected $description = 'Calculate all annual booking goal rewards per agency in a given year';
+    protected $description = 'Calculate all annual booking goal rewards 
+    for each enrolled agency that has won a reward in a given year';
 
     /**
      * @var BookingGoalService
